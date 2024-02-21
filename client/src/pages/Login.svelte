@@ -39,7 +39,7 @@
     />
     <button
       type="button"
-      on:click={() => push("/dashboard")}
+      on:click={() => push("/feed")}
       class="rounded-xl bg-[#f48c25] px-6 py-3 text-sm font-bold text-[#1e1911]"
       >Log in</button
     >
