@@ -1,15 +1,15 @@
 <script>
   import { onMount } from "svelte";
   import { push } from "svelte-spa-router";
-  import { fetchCurrentUser } from "../helpers/localStorage";
+  import user from '../stores/userStore';
 
   onMount(async () => {
-    if (!fetchCurrentUser()) {
+    if (!$user) {
       push("/login?p=" + window.location.hash.split("#")[1]);
     }
   });
 </script>
 
-{#if fetchCurrentUser()}
+{#if $user}
   <slot />
 {/if}

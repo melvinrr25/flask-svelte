@@ -16,8 +16,7 @@ async function genericRequest(url, method, body) {
     // add token to headers if it exists
     if (fetchCurrentUser()) {
       const userFromLocalStorage = fetchCurrentUser();
-      requestOptions.headers["Authorization"] =
-        userFromLocalStorage.accessToken;
+      requestOptions.headers["Authorization"] =userFromLocalStorage.accessToken;
     }
 
     const response = await fetch(`${constants.HOST}${url}`, requestOptions);

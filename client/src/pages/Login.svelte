@@ -3,14 +3,15 @@
   import { POST } from "../helpers/http";
   import { localStorageCurrentUserUpdate } from "../helpers/localStorage";
   import { getParameterByName } from "../helpers/utilities";
-  import { fetchCurrentUser } from "../helpers/localStorage";
   import { onMount } from "svelte";
+  import user from '../stores/userStore';
 
   let username = "";
   let password = "";
 
   onMount(() => {
-    if (fetchCurrentUser()) {
+    if ($user) {
+      console.log($user);
       push("/feed");
     }
   });
@@ -24,6 +25,7 @@
 
       if (status === 200) {
         localStorageCurrentUserUpdate(data);
+        $user = data;
         var p = getParameterByName("p");
         push(p || "/feed");
       } else {
@@ -35,7 +37,7 @@
   };
 </script>
 
-{#if !fetchCurrentUser()}
+{#if !$user}
   <div class="login-image-container mx-auto rounded-2xl sm:w-[400px]">
     <div
       class="flex h-full w-full flex-col items-center justify-center rounded-2xl bg-[rgba(1,1,1,0.4)] p-2"

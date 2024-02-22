@@ -2,13 +2,15 @@
   import { link, push } from "svelte-spa-router";
   import active from "svelte-spa-router/active";
   import { IconDog } from "@tabler/icons-svelte";
-  import { fetchCurrentUser } from "../helpers/localStorage";
-  let currentUser = fetchCurrentUser();
+  
+  import user from '../stores/userStore';
+ 
   
   const handleLogut = () => {
     localStorage.clear();
+    $user = null;
     push("/login");
-    currentUser = null;
+    
   };
 </script>
 
@@ -26,7 +28,7 @@
       </a>
     </div>
     <div class="flex gap-2">
-      {#if !currentUser}
+      {#if !$user}
         <button
           on:click={() => push("/signup")}
           class="rounded-xl bg-[#f48c25] px-4 py-2 text-sm font-bold text-[#1e1911]"
@@ -39,7 +41,7 @@
         >
       {/if}
 
-      {#if currentUser}
+      {#if $user}
         <button
           on:click={handleLogut}
           class="rounded-xl bg-[#f5efe8] px-4 py-2 text-sm font-bold text-[#1e1911]"
