@@ -1,5 +1,8 @@
 <script>
   import Layout from "../components/Layout.svelte";
+  import { fetchCurrentUser } from "../helpers/localStorage";
+  
+  console.log(fetchCurrentUser())
 </script>
 
 <Layout>

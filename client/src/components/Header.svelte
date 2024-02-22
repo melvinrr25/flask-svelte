@@ -2,6 +2,14 @@
   import { link, push } from "svelte-spa-router";
   import active from "svelte-spa-router/active";
   import { IconDog } from "@tabler/icons-svelte";
+  import { fetchCurrentUser } from "../helpers/localStorage";
+  let currentUser = fetchCurrentUser();
+  
+  const handleLogut = () => {
+    localStorage.clear();
+    push("/login");
+    currentUser = null;
+  };
 </script>
 
 <header class="mb-10 border-b px-12">
@@ -18,27 +26,33 @@
       </a>
     </div>
     <div class="flex gap-2">
-      <button
-        on:click={() => push("/signup")}
-        class="rounded-xl bg-[#f48c25] px-4 py-2 text-sm font-bold text-[#1e1911]"
-        >Sign up</button
-      >
-      <button
-        on:click={() => push("/login")}
-        class="rounded-xl bg-[#f5efe8] px-4 py-2 text-sm font-bold text-[#1e1911]"
-        >Log in</button
-      >
-      <a
-        use:link
-        use:active
-        href="/settings"
-      >
-        <img
-          src="https://img.freepik.com/free-photo/portrait-man-laughing_23-2148859448.jpg?size=338&ext=jpg&ga=GA1.1.1700460183.1708387200&semt=ais"
-          alt="Profile picture"
-          class="h-8 w-8 rounded-full"
-        />
-      </a>
+      {#if !currentUser}
+        <button
+          on:click={() => push("/signup")}
+          class="rounded-xl bg-[#f48c25] px-4 py-2 text-sm font-bold text-[#1e1911]"
+          >Sign up</button
+        >
+        <button
+          on:click={() => push("/login")}
+          class="rounded-xl bg-[#f5efe8] px-4 py-2 text-sm font-bold text-[#1e1911]"
+          >Log in</button
+        >
+      {/if}
+
+      {#if currentUser}
+        <button
+          on:click={handleLogut}
+          class="rounded-xl bg-[#f5efe8] px-4 py-2 text-sm font-bold text-[#1e1911]"
+          >Log Out</button
+        >
+        <a use:link use:active href="/settings">
+          <img
+            src="https://img.freepik.com/free-photo/portrait-man-laughing_23-2148859448.jpg?size=338&ext=jpg&ga=GA1.1.1700460183.1708387200&semt=ais"
+            alt="Profile picture"
+            class="h-8 w-8 rounded-full"
+          />
+        </a>
+      {/if}
     </div>
   </nav>
 </header>
