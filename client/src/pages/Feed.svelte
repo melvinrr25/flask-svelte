@@ -17,15 +17,25 @@
     loadPosts();
   });
 
-  const loadPosts = async () => {
+  const loadPosts = async (lastPost) => {
     try {
-      const [status, data] = await GET(`/api/users/${$user.user.key}/posts`);
+      let url;
+      
+      if(lastPost) {
+        url = `/api/users/${$user.user.key}/posts?last=${lastPost}` 
+      }else {
+        url = `/api/users/${$user.user.key}/posts`
+      }
+      
+      const [status, data] = await GET(url)
+      
       if (status === 200) {
-        posts = data.posts;
+        posts = [...posts, ...data.posts];
       } else {
         alert("ERROR");
       }
     } catch (err) {
+      console.log(err);
       alert(err);
     }
   };
@@ -113,33 +123,45 @@
   <!-- Posts -->
   <div class="flex flex-col gap-4">
     {#each posts as post}
-      <div class="flex flex-col gap-2 bg-gray-50 p-6 mb-10 shadow">
+      <div class="mb-10 flex flex-col gap-2 bg-gray-50 p-6 shadow">
         <h2 class="flex items-center gap-2 pb-4">
           <span class="text-sm text-gray-500">
-            <img src={post.user.ownerPhotoUrl} alt={post.user.ownerName} class="h-8 w-8 rounded-full object-cover" />
+            <img
+              src={post.user.ownerPhotoUrl}
+              alt={post.user.ownerName}
+              class="h-8 w-8 rounded-full object-cover"
+            />
           </span>
-          <span class="text-sm font-bold text-[#00000]">{post.user.ownerName}</span>
+          <span class="text-sm font-bold text-[#00000]"
+            >{post.user.ownerName}</span
+          >
         </h2>
         <h3 class="text-sm font-bold text-gray-500">{post.title}</h3>
-        <p class="text-gray-500 text-sm text-wrap">{post.content}</p>
+        <p class="text-wrap text-sm text-gray-500">{post.content}</p>
         <img
           src={post.photoUrl}
           alt={post.title}
           class="h-64 w-[50%] rounded-xl object-cover"
         />
         <div class="flex items-center gap-2">
-        <span class="cursor-pointer rounded-full text-white p-2 bg-red-500">
-          <IconHeartFilled size="20" />
-        </span>  
-        <span class="cursor-pointer rounded-full text-white p-2 bg-blue-500">
-          
-          <IconThumbUpFilled size="20" />
-        </span>
-        <span class="flex gap-2">
-          <IconMessageCircle /> 22 Comments
-        </span>
+          <span class="cursor-pointer rounded-full bg-red-500 p-2 text-white">
+            <IconHeartFilled size="20" />
+          </span>
+          <span class="cursor-pointer rounded-full bg-blue-500 p-2 text-white">
+            <IconThumbUpFilled size="20" />
+          </span>
+          <span class="flex gap-2">
+            <IconMessageCircle /> 22 Comments
+          </span>
         </div>
       </div>
     {/each}
-  </div></Layout
->
+  </div>
+  {#if posts.length > 0}
+    <div class="text-center">
+      <button on:click={() => loadPosts(posts[posts.length - 1].key)}
+        class="rounded bg-blue-500 px-4 py-2 text-white">Load More</button>
+    </div>
+  {/if}
+  
+</Layout>

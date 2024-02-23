@@ -97,13 +97,17 @@ def user_posts(user_id):
 
 @app.route("/api/users/<user_id>/posts", methods=["GET"])
 def user_get_posts(user_id):
+    args = request.args
+    last = args.get("last")
     db_user_posts = deta.Base("pet_connect__user_posts")
     db_user_accounts = deta.Base("pet_connect__user_accounts")
-    res = db_user_posts.fetch({"user_id": user_id})
+    res = db_user_posts.fetch({"user_id": user_id}, limit=1, last=last)
+    
+    print(res)
     
     result = []
     for item in res.items:
-        account = db_user_accounts.fetch({"user_id": user_id}).items[0]
+        account = db_user_accounts.fetch({"user_id": user_id}, limit=1).items[0]
         item["user"] = account
         result.append(item)
     
