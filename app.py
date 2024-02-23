@@ -98,8 +98,16 @@ def user_posts(user_id):
 @app.route("/api/users/<user_id>/posts", methods=["GET"])
 def user_get_posts(user_id):
     db_user_posts = deta.Base("pet_connect__user_posts")
+    db_user_accounts = deta.Base("pet_connect__user_accounts")
     res = db_user_posts.fetch({"user_id": user_id})
-    return jsonify({ "posts": res.items })
+    
+    result = []
+    for item in res.items:
+        account = db_user_accounts.fetch({"user_id": user_id}).items[0]
+        item["user"] = account
+        result.append(item)
+    
+    return jsonify({ "posts": result })
 
 with_debug = True if os.getenv('FLASK_DEBUG') else False
 app.run(host='0.0.0.0', port=os.getenv('PORT'), debug=with_debug)

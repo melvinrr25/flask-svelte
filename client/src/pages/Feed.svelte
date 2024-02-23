@@ -21,7 +21,6 @@
     try {
       const [status, data] = await GET(`/api/users/${$user.user.key}/posts`);
       if (status === 200) {
-        debugger;
         posts = data.posts;
       } else {
         alert("ERROR");
@@ -55,7 +54,7 @@
 </script>
 
 <Layout>
-  <div class="">
+  <div class="hidden">
     <h1 class="pb-5 text-xl font-bold text-[#00000]">Create Post</h1>
     <form on:submit|preventDefault={handlePostSubmit}>
       <div class="flex flex-row gap-4">
@@ -114,20 +113,27 @@
   <!-- Posts -->
   <div class="flex flex-col gap-4">
     {#each posts as post}
-      <div class="flex flex-col gap-2 rounded-xl bg-gray-50 p-6 mb-10">
-        <h2 class="text-xl font-bold text-[#00000]">{post.title}</h2>
-        <p class="text-gray-500">{post.content}</p>
+      <div class="flex flex-col gap-2 bg-gray-50 p-6 mb-10 shadow">
+        <h2 class="flex items-center gap-2 pb-4">
+          <span class="text-sm text-gray-500">
+            <img src={post.user.ownerPhotoUrl} alt={post.user.ownerName} class="h-8 w-8 rounded-full object-cover" />
+          </span>
+          <span class="text-sm font-bold text-[#00000]">{post.user.ownerName}</span>
+        </h2>
+        <h3 class="text-sm font-bold text-gray-500">{post.title}</h3>
+        <p class="text-gray-500 text-sm text-wrap">{post.content}</p>
         <img
           src={post.photoUrl}
           alt={post.title}
           class="h-64 w-[50%] rounded-xl object-cover"
         />
         <div class="flex items-center gap-2">
-        <span class="rounded-full text-white p-2 bg-red-500">
-          <IconThumbUpFilled size="20" />
-        </span>  
-        <span class="rounded-full text-white p-2 bg-blue-500">
+        <span class="cursor-pointer rounded-full text-white p-2 bg-red-500">
           <IconHeartFilled size="20" />
+        </span>  
+        <span class="cursor-pointer rounded-full text-white p-2 bg-blue-500">
+          
+          <IconThumbUpFilled size="20" />
         </span>
         <span class="flex gap-2">
           <IconMessageCircle /> 22 Comments
