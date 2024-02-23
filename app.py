@@ -74,5 +74,32 @@ def user_account_update(user_id, account_id ):
     print(res)
     return jsonify({ "result": "ok" })
 
+@app.route("/api/users/<user_id>/posts", methods=["POST"])
+def user_posts(user_id):
+    db_user_posts = deta.Base("pet_connect__user_posts")
+    
+    # grab request body
+    data = request.json
+    
+    title = data.get("title")
+    content = data.get("content")
+    photoUrl = data.get("photoUrl")
+    
+    data = {
+       "title": title,
+        "content": content,
+        "photoUrl": photoUrl,
+        "user_id": user_id,
+    }
+    res = db_user_posts.put(data)
+    print(res)
+    return jsonify({ "result": "ok" })
+
+@app.route("/api/users/<user_id>/posts", methods=["GET"])
+def user_get_posts(user_id):
+    db_user_posts = deta.Base("pet_connect__user_posts")
+    res = db_user_posts.fetch({"user_id": user_id})
+    return jsonify({ "posts": res.items })
+
 with_debug = True if os.getenv('FLASK_DEBUG') else False
 app.run(host='0.0.0.0', port=os.getenv('PORT'), debug=with_debug)

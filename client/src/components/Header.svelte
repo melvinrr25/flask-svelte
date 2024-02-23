@@ -8,7 +8,6 @@
     localStorage.clear();
     $user = null;
     push("/login");
-    
   };
 </script>
 

@@ -25,13 +25,13 @@
             use:link
             use:active
             class="flex flex-col items-center justify-center gap-2 px-2 py-2 text-gray-500 hover:text-gray-800 md:flex-row md:justify-start"
-            href="/create-ride"
+            href="/feed"
           >
             <span
               class="rounded-full bg-gradient-to-r from-cyan-500 to-blue-700 p-2 text-white"
             >
               <IconDeviceTv />
-            </span> Create Ride
+            </span> News Feed
           </a>
         </li>
 
