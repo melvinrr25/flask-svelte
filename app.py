@@ -27,6 +27,7 @@ def home(path):
 def login():
     db_users = deta.Base("pet_connect__users")
     db_tokens = deta.Base("pet_connect__tokens")
+    db_user_accounts = deta.Base("pet_connect__user_accounts")
     # grab request body
     data = request.json
     usename = data.get("username")
@@ -43,9 +44,35 @@ def login():
     user = res.items[0]
     token = str(uuid.uuid4())
     db_tokens.put({"token": token, "user_id": user["key"]})
-    del user["password"]    
+    del user["password"]
+    print(">>>>>>>>>>>", user["key"])
+    print(db_user_accounts.fetch({"user_id": user["key"]}).items)
+    account = db_user_accounts.fetch({"user_id": user["key"]}).items[0]
+    user["account"] = account
     
     return jsonify({ "token": token, "user": user })
+    
+@app.route("/api/users/<user_id>/accounts/<account_id>", methods=["POST"])
+def user_account_update(user_id, account_id ):
+    db_user_accounts = deta.Base("pet_connect__user_accounts")
+    
+    # grab request body
+    data = request.json
+    
+    petName = data.get("petName")
+    petPhotoUrl = data.get("petPhotoUrl")
+    ownerName = data.get("ownerName")
+    ownerPhotoUrl = data.get("ownerPhotoUrl")
+    data = {
+        "petName": petName,
+        "petPhotoUrl": petPhotoUrl,
+        "ownerName": ownerName,
+        "ownerPhotoUrl": ownerPhotoUrl,
+        "user_id": user_id,
+    }
+    res = db_user_accounts.put(data, account_id)
+    print(res)
+    return jsonify({ "result": "ok" })
 
 with_debug = True if os.getenv('FLASK_DEBUG') else False
 app.run(host='0.0.0.0', port=os.getenv('PORT'), debug=with_debug)

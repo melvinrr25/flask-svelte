@@ -6,7 +6,7 @@
 </script>
 
 <Layout>
-  <div class="bg-white p-10">
+  <div>
     <h1 class="mb-6 text-3xl font-bold text-[#00000]">Settings</h1>
     <h2 class="text-sm text-gray-400">General</h2>
     <ul>

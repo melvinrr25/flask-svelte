@@ -2,10 +2,8 @@
   import { link, push } from "svelte-spa-router";
   import active from "svelte-spa-router/active";
   import { IconDog } from "@tabler/icons-svelte";
-  
   import user from '../stores/userStore';
  
-  
   const handleLogut = () => {
     localStorage.clear();
     $user = null;
@@ -21,7 +19,7 @@
         use:link
         use:active
         class="text-xl-custom logo flex items-center gap-2 pr-1 font-bold"
-        href="/"
+        href="{ $user ? '/feed' : '/'}"
       >
         <IconDog />
         PetConnect
@@ -49,7 +47,7 @@
         >
         <a use:link use:active href="/settings">
           <img
-            src="https://img.freepik.com/free-photo/portrait-man-laughing_23-2148859448.jpg?size=338&ext=jpg&ga=GA1.1.1700460183.1708387200&semt=ais"
+            src="{$user.user.account.ownerPhotoUrl}"
             alt="Profile picture"
             class="h-8 w-8 rounded-full"
           />

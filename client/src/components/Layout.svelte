@@ -15,9 +15,9 @@
 </script>
 
 <Authorize>
-  <div class="layout my-10 flex flex-col gap-10 md:flex-row">
+  <div class="my-10 flex flex-col gap-10 md:flex-row">
     <aside
-      class="fixed bottom-0 left-0 right-0 z-10 w-full rounded-2xl bg-gray-800 text-white md:relative md:w-[200px] md:bg-white md:text-gray-700"
+      class="fixed bottom-0 left-0 right-0 z-10 w-full bg-gray-800 text-white md:relative md:w-[200px] md:bg-white md:text-gray-700"
     >
       <ul class="flex p-2 md:flex-col">
         <li class="flex flex-1 justify-center md:block">
@@ -65,7 +65,7 @@
         </li>
       </ul>
     </aside>
-    <main class="grow pb-[50px]">
+    <main class="grow pb-[50px] bg-white p-10">
       <slot />
     </main>
   </div>
