@@ -14,6 +14,8 @@
   let posts = [];
 
   onMount(() => {
+    if(!$user){ return }
+    
     loadPosts();
   });
 
@@ -64,7 +66,7 @@
 </script>
 
 <Layout>
-  <div class="hidden">
+  <div class="">
     <h1 class="pb-5 text-xl font-bold text-[#00000]">Create Post</h1>
     <form on:submit|preventDefault={handlePostSubmit}>
       <div class="flex flex-row gap-4">
