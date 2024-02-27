@@ -12,6 +12,8 @@
   let content = "";
   let photoUrl = "";
   let posts = [];
+  let loadingPosts = false;
+  let creatingPost = false;
 
   onMount(() => {
     if(!$user){ return }
@@ -22,6 +24,7 @@
   const loadPosts = async (lastPost) => {
     try {
       let url;
+      loadingPosts = true;
       
       if(lastPost) {
         url = `/api/users/${$user.user.key}/posts?last=${lastPost}` 
@@ -33,16 +36,25 @@
       
       if (status === 200) {
         posts = [...posts, ...data.posts];
+        loadingPosts = false;
       } else {
         alert("ERROR");
       }
     } catch (err) {
       console.log(err);
+      loadingPosts = false;
       alert(err);
+      
     }
   };
 
   const handlePostSubmit = async () => {
+    if (!title || !content || !photoUrl) {
+      return alert("All fields are required");
+    }
+    
+    creatingPost = true;
+    
     try {
       console.log($user);
       const [status, data] = await POST(
@@ -55,11 +67,16 @@
       );
 
       if (status === 200) {
+        creatingPost = false;
+        title = "";
+        content = "";
+        photoUrl = "";
         alert("OK posted!");
       } else {
         alert("ERROR");
       }
     } catch (err) {
+      creatingPost = false;
       alert(err);
     }
   };
@@ -114,7 +131,13 @@
       </div>
       <div class="mt-2 flex justify-end">
         <button type="submit" class="rounded bg-blue-500 px-4 py-2 text-white">
-          Create Post</button
+        {#if creatingPost}
+          Creating Post...
+        {:else}
+          Create Post 
+        {/if}  
+        
+        </button
         >
       </div>
     </form>
@@ -161,8 +184,16 @@
   </div>
   {#if posts.length > 0}
     <div class="text-center">
-      <button on:click={() => loadPosts(posts[posts.length - 1].key)}
-        class="rounded bg-blue-500 px-4 py-2 text-white">Load More</button>
+      <button 
+        disabled={loadingPosts}
+        on:click={() => loadPosts(posts[posts.length - 1].key)}
+        class="rounded bg-blue-500 disabled:opacity-50 px-4 py-2 text-white">
+        {#if loadingPosts }
+          Loading...
+        {:else}
+          Load More
+        {/if}
+      </button>
     </div>
   {/if}
   
