@@ -6,6 +6,7 @@
     IconSquareRoundedPlus,
     IconDashboard,
     IconDeviceTv,
+    IconUsers,
   } from "@tabler/icons-svelte";
 
   import Authorize from "./Authorize.svelte";
@@ -40,29 +41,16 @@
             use:link
             use:active
             class="flex flex-col items-center justify-center gap-2 px-2 py-2 text-gray-500 hover:text-gray-800 md:flex-row md:justify-start"
-            href="/create-ride"
+            href="/people"
           >
             <span
-              class="rounded-full bg-gradient-to-r from-green-500 to-green-700 p-2 text-white"
+              class="rounded-full bg-gradient-to-r from-orange-500 to-orange-700 p-2 text-white"
             >
-              <IconDeviceTv />
-            </span> Create Ride
+              <IconUsers />
+            </span> Find People
           </a>
         </li>
-        <li class="flex flex-1 justify-center md:block">
-          <a
-            use:link
-            use:active
-            class="flex flex-col items-center justify-center gap-2 px-2 py-2 text-gray-500 hover:text-gray-800 md:flex-row md:justify-start"
-            href="/create-ride"
-          >
-            <span
-              class="rounded-full bg-gradient-to-r from-red-500 to-red-700 p-2 text-white"
-            >
-              <IconDeviceTv />
-            </span> Create Ride
-          </a>
-        </li>
+        
       </ul>
     </aside>
     <main class="grow pb-[50px] bg-white p-10">
