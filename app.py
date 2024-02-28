@@ -116,11 +116,11 @@ def user_get_posts(user_id):
 def user_get_list():
     args = request.args
     last = args.get("last")
-    nameArg = args.get("ownerName")
+    nameArg = args.get("username")
  
     db_user_accounts = deta.Base("pet_connect__user_accounts")
     if nameArg:
-        res = db_user_accounts.fetch({"ownerName": nameArg}, limit=5)
+        res = db_user_accounts.fetch({"username?contains": nameArg}, limit=5)
     else:
         res = db_user_accounts.fetch({}, limit=5)
     

@@ -14,6 +14,7 @@
   let photoUrl = "";
   let posts = [];
   let peopleList = [];
+  let usernameSearch = "";
   let loadingPeople = false;
   let creatingPost = false;
 
@@ -27,7 +28,12 @@
 
   const loadPeople = async () => {
     try {
-      let url = "/api/users";
+      let url;
+      if (usernameSearch.length > 0) {
+        url = `/api/users?username=${usernameSearch}`;
+      } else {
+        url = "/api/users";
+      }
       loadingPeople = true;
 
       const [status, data] = await GET(url);
@@ -44,46 +50,65 @@
       alert(err);
     }
   };
+
+  let searchTimeout;
+  const debounceSearch = (e) => {
+    // 2 seconds debounce cancel previous request
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
+    }
+    searchTimeout = setTimeout(() => {
+      usernameSearch = e.target.value;
+      loadPeople();
+    }, 1000);
+  };
 </script>
 
 <Layout>
   <div class="flex items-center justify-between bg-gray-50 p-6">
     <h1 class="text-xl font-bold text-[#00000]">People</h1>
     <div>
-      <form>
-        <input
-          class="bg-white-100 rounded-md border border-gray-300 px-6 py-3"
-          type="search"
-          placeholder="Search here"
-        />
-      </form>
+      <input
+        on:input={debounceSearch}
+        class="bg-white-100 rounded-md border border-gray-300 px-6 py-3"
+        type="search"
+        placeholder="Search here"
+      />
     </div>
   </div>
-  <div class="grid-cols mt-5 grid gap-4 md:grid-cols-2">
-    {#each peopleList as person}
-      <div class="relative flex h-[200px] flex-col">
-        <img
-          class="h-[50%] w-full object-cover"
-          src="https://images.unsplash.com/photo-1508108712903-49b7ef9b1df8?q=10&w=400"
-          alt="bg"
-        />
-        <div
-          class="flex h-[50%] w-full items-start justify-between bg-gray-50 py-3 pl-[120px] pr-5"
-        >
-          <div>
-            <h1 class="text-xl font-bold text-[#00000]">{person.ownerName}</h1>
-            <p class="text-sm text-gray-400">{person.petName}</p>
-          </div>
-          <button class="mt-2 rounded-full bg-blue-600 px-4 py-2 text-white"
-            >Follow</button
+  {#if loadingPeople}
+    <div class="flex p-10 items-center justify-center bg-gray-50">
+      Loading...
+    </div>
+  {:else}
+    <div class="grid-cols mt-5 grid gap-4 md:grid-cols-2">
+      {#each peopleList as person}
+        <div class="relative flex h-[200px] flex-col">
+          <img
+            class="h-[50%] w-full object-cover"
+            src="https://images.unsplash.com/photo-1508108712903-49b7ef9b1df8?q=10&w=400"
+            alt="bg"
+          />
+          <div
+            class="flex h-[50%] w-full items-start justify-between bg-gray-50 py-3 pl-[120px] pr-5"
           >
+            <div>
+              <h1 class="text-xl font-bold text-[#00000]">
+                {person.ownerName}
+              </h1>
+              <p class="text-sm text-gray-400">@{person.username}</p>
+            </div>
+            <button class="mt-2 rounded-full bg-blue-600 px-4 py-2 text-white"
+              >Follow</button
+            >
+          </div>
+          <img
+            class="absolute left-5 top-[50%] h-[100px] w-[100px] translate-y-[-50%] rounded-full border border-4 border-white"
+            src={person.ownerPhotoUrl}
+            alt="profile"
+          />
         </div>
-        <img
-          class="absolute left-5 top-[50%] h-[100px] w-[100px] translate-y-[-50%] rounded-full border border-4 border-white"
-          src={person.ownerPhotoUrl}
-          alt="profile"
-        />
-      </div>
-    {/each}
-  </div>
+      {/each}
+    </div>
+  {/if}
 </Layout>
