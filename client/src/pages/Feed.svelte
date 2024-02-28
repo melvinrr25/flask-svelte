@@ -25,7 +25,7 @@
     try {
       let url;
       loadingPosts = true;
-      
+      console.log($user);
       if(lastPost) {
         url = `/api/users/${$user.user.key}/posts?last=${lastPost}` 
       }else {

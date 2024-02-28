@@ -10,15 +10,15 @@
   const handleSubmit = async () => {
     try {
       console.log($user);
-      const [status, data] = await POST(
-        `/api/users/${$user.user.key}/accounts/${$user.user.account.key}`,
-        JSON.stringify({ 
-          petName: $user.user.account.petName,
-          ownerName: $user.user.account.ownerName,
-          petPhotoUrl: $user.user.account.petPhotoUrl,
-          ownerPhotoUrl: $user.user.account.ownerPhotoUrl,
-        }),
-      );
+      const payload = JSON.stringify({
+        petName: $user.user.petName,
+        ownerName: $user.user.ownerName,
+        petPhotoUrl: $user.user.petPhotoUrl,
+        ownerPhotoUrl: $user.user.ownerPhotoUrl,
+      });
+      
+      const url = `/api/users/${$user.user.key}`
+      const [status, data] = await POST(url, payload);
 
       if (status === 200) {
         localStorageCurrentUserUpdate($user);
@@ -51,7 +51,7 @@
         >
         <label for="username" class="text-sm font-bold">Pet Name:</label>
         <input
-          bind:value={$user.user.account.petName}
+          bind:value={$user.user.petName}
           placeholder="Pet Name"
           type="text"
           id="petName"
@@ -61,7 +61,7 @@
 
         <label for="username" class="text-sm font-bold">Pet Photo Url:</label>
         <input
-          bind:value={$user.user.account.petPhotoUrl}
+          bind:value={$user.user.petPhotoUrl}
           placeholder="Pet Photo URL"
           type="url"
           id="petPhotoUrl"
@@ -76,7 +76,7 @@
         >
         <label for="username" class="text-sm font-bold">Owner Name:</label>
         <input
-          bind:value={$user.user.account.ownerName}
+          bind:value={$user.user.ownerName}
           placeholder="Owner Name"
           type="text"
           id="ownerName"
@@ -86,7 +86,7 @@
 
         <label for="username" class="text-sm font-bold">Owner Photo Url:</label>
         <input
-          bind:value={$user.user.account.ownerPhotoUrl}
+          bind:value={$user.user.ownerPhotoUrl}
           placeholder="Owner Photo URL"
           type="url"
           id="ownerPhotoUrl"

@@ -46,7 +46,7 @@
         >
         <a use:link use:active href="/settings">
           <img
-            src="{$user.user.account.ownerPhotoUrl}"
+            src="{$user.user.ownerPhotoUrl}"
             alt="Profile picture"
             class="h-8 w-8 rounded-full"
           />
