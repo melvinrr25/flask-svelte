@@ -5,6 +5,7 @@
   import { getParameterByName } from "../helpers/utilities";
   import { onMount } from "svelte";
   import user from '../stores/userStore';
+  import toast from 'svelte-french-toast';
 
   let username = "";
   let password = "";
@@ -17,6 +18,9 @@
   });
 
   const handleLogin = async () => {
+    if(!username || !password){
+      return toast.error("Please enter a username and password");
+    }
     try {
       const [status, data] = await POST(
         "/api/sessions",
@@ -28,11 +32,12 @@
         $user = data;
         var p = getParameterByName("p");
         push(p || "/feed");
+        toast.success("Welcome back!");
       } else {
-        alert("Invalid credentials");
+        toast.error("Invalid username or password");
       }
     } catch (err) {
-      alert(err);
+      toast.error("Invalid username or password");
     }
   };
 </script>

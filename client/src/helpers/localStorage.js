@@ -1,7 +1,6 @@
 const CURRENT_USER = 'currentUser';
 
 export function localStorageCurrentUserUpdate(attrs) {
-  debugger
   try{
     const currentUser = fetchCurrentUser() || {}
 

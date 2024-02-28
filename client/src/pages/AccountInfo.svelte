@@ -6,6 +6,7 @@
   import { POST } from "../helpers/http";
   import user from "../stores/userStore";
   import { localStorageCurrentUserUpdate } from "../helpers/localStorage";
+  import toast from 'svelte-french-toast';
 
   const handleSubmit = async () => {
     try {
@@ -22,9 +23,9 @@
 
       if (status === 200) {
         localStorageCurrentUserUpdate($user);
-        alert("OK");
+        toast.success("Account information updated!");
       } else {
-        alert("ERROR");
+        toast.error("There was an error updating your account information");
       }
     } catch (err) {
       alert(err);

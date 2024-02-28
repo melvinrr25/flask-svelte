@@ -8,6 +8,8 @@
   import { POST, GET } from "../helpers/http";
   import user from "../stores/userStore";
   import { onMount } from "svelte";
+  import toast from 'svelte-french-toast';
+  
   let title = "";
   let content = "";
   let photoUrl = "";
@@ -50,7 +52,7 @@
 
   const handlePostSubmit = async () => {
     if (!title || !content || !photoUrl) {
-      return alert("All fields are required");
+      return toast.error("Please fill out all fields");
     }
     
     creatingPost = true;
@@ -71,13 +73,13 @@
         title = "";
         content = "";
         photoUrl = "";
-        alert("OK posted!");
+        toast.success("Post created!");
       } else {
-        alert("ERROR");
+        toast.error("There was an error creating your post");
       }
     } catch (err) {
       creatingPost = false;
-      alert(err);
+      toast.error("There was an error creating your post");
     }
   };
 </script>
