@@ -9,6 +9,7 @@
   import Header from "./components/Header.svelte";
   import Router from "svelte-spa-router";
   import active from "svelte-spa-router/active";
+ // import toast, { Toaster } from 'svelte-french-toast';
 </script>
 
 <Header />

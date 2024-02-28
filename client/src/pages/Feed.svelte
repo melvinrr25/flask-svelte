@@ -27,9 +27,9 @@
       loadingPosts = true;
       console.log($user);
       if(lastPost) {
-        url = `/api/users/${$user.user.key}/posts?last=${lastPost}` 
+        url = `/api/posts?last=${lastPost}` 
       }else {
-        url = `/api/users/${$user.user.key}/posts`
+        url = `/api/posts`
       }
       
       const [status, data] = await GET(url)
