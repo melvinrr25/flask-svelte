@@ -4,11 +4,12 @@
   import { localStorageCurrentUserUpdate } from "../helpers/localStorage";
   import { getParameterByName } from "../helpers/utilities";
   import { onMount } from "svelte";
-  import user from '../stores/userStore';
-  import toast from 'svelte-french-toast';
+  import user from "../stores/userStore";
+  import toast from "svelte-french-toast";
 
   let username = "";
   let password = "";
+  let loadingLogin = false;
 
   onMount(() => {
     if ($user) {
@@ -18,9 +19,11 @@
   });
 
   const handleLogin = async () => {
-    if(!username || !password){
+    if (!username || !password) {
       return toast.error("Please enter a username and password");
     }
+
+    loadingLogin = true;
     try {
       const [status, data] = await POST(
         "/api/sessions",
@@ -39,6 +42,7 @@
     } catch (err) {
       toast.error("Invalid username or password");
     }
+    loadingLogin = false;
   };
 </script>
 
@@ -86,9 +90,19 @@
       />
       <button
         type="submit"
-        class="rounded-xl bg-[#f48c25] px-6 py-3 text-sm font-bold text-[#1e1911]"
-        >Log in</button
+        disabled={loadingLogin}
+        class="rounded-xl bg-[#f48c25] px-6 py-3 text-sm font-bold text-[#1e1911] disabled:cursor-not-allowed disabled:opacity-50"
       >
+        {#if loadingLogin}
+          <div class="flex items-center justify-center">
+            <div
+              class="h-5 w-5 animate-spin rounded-full border-b-2 border-white"
+            ></div>
+          </div>
+        {:else}
+          Log in
+        {/if}
+      </button>
     </form>
   </div>
 {/if}

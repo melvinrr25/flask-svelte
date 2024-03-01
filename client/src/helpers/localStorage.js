@@ -1,4 +1,5 @@
 const CURRENT_USER = 'currentUser';
+const CURRENT_FOLLOWS = 'follows';
 
 export function localStorageCurrentUserUpdate(attrs) {
   try{
@@ -21,6 +22,15 @@ export function fetchCurrentUser() {
   catch (e) {
     console.error("fetchCurrentUser", e);
     return null;
+  }
+}
+
+export function fetchCurrentFollows() {
+  try {
+    return JSON.parse(localStorage.getItem(CURRENT_FOLLOWS) || "[]");
+  } catch (e) {
+    alert("fetchCurrentFollows", e);
+    return [];
   }
 }
 

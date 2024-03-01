@@ -47,6 +47,25 @@ def login():
     del user["password"]
     return jsonify({ "token": token, "user": user })
     
+@app.route("/api/follow", methods=["POST"])
+def follow():
+    db_follows = deta.Base("pet_connect__follows")
+    # grab request body
+    data = request.json
+    follower = data.get("followerId") # the person following
+    followee = data.get("followeeId") # the person being followed
+    
+    db_follows.put({ "followerId": follower, "followeeId": followee })
+    
+    return jsonify({ "result": "ok" })
+
+@app.route("/api/follows/<follower_id>", methods=["GET"])
+def get_follow(follower_id):
+    db_follows = deta.Base("pet_connect__follows")
+    followees = db_follows.fetch({"followerId": follower_id})
+    
+    return jsonify({ "followees": followees.items })
+    
 @app.route("/api/users/<account_id>", methods=["POST"])
 def user_account_update(account_id):
     db_user_accounts = deta.Base("pet_connect__user_accounts")
