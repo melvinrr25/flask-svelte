@@ -9,6 +9,8 @@
   import user from "../stores/userStore";
   import { onMount } from "svelte";
   import toast from 'svelte-french-toast';
+  import { loadFollows } from "../helpers/utilities";
+  import follows from "../stores/followsStore";
   
   let title = "";
   let content = "";
@@ -17,9 +19,12 @@
   let loadingPosts = false;
   let creatingPost = false;
 
-  onMount(() => {
+  onMount(async () => {
     if(!$user){ return }
     
+    if (!$follows.length){
+      await loadFollows()
+    }
     loadPosts();
   });
 
@@ -151,17 +156,25 @@
   <div class="flex flex-col gap-4">
     {#each posts as post}
       <div class="mb-10 flex flex-col gap-2 bg-gray-50 p-6 shadow">
-        <h2 class="flex items-center gap-2 pb-4">
-          <span class="text-sm text-gray-500">
-            <img
-              src={post.user.ownerPhotoUrl}
-              alt={post.user.ownerName}
-              class="h-8 w-8 rounded-full object-cover"
-            />
-          </span>
-          <span class="text-sm font-bold text-[#00000]"
-            >{post.user.ownerName}</span
-          >
+        <h2 class="flex justify-between pb-4">
+        <div class="flex items-center gap-2">
+            <span class="text-sm text-gray-500">
+              <img
+                src={post.user.ownerPhotoUrl}
+                alt={post.user.ownerName}
+                class="h-8 w-8 rounded-full object-cover"
+              />
+            </span>
+            <span class="text-sm font-bold text-[#00000]"
+              >{post.user.ownerName}</span
+            >
+          </div>
+          
+          {#if $follows.includes(post.user.key)}
+            <div
+              class="mt-2 rounded-full bg-green-100 px-4 py-2 text-green-600"
+              >Following</div>
+          {/if}
         </h2>
         <h3 class="text-sm font-bold text-gray-500">{post.title}</h3>
         <p class="text-wrap text-sm text-gray-500">{post.content}</p>

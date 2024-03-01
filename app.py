@@ -119,11 +119,10 @@ def user_get_posts():
     last = args.get("last")
     db_user_posts = deta.Base("pet_connect__user_posts")
     db_user_accounts = deta.Base("pet_connect__user_accounts")
-    res = db_user_posts.fetch({}, limit=1, last=last)
+    res = db_user_posts.fetch({}, limit=10, last=last)
     
     result = []
     for item in res.items:
-        print(item)
         item["user"] = db_user_accounts.get(item["user_id"])
         result.append(item)
     
