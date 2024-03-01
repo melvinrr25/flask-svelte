@@ -29,7 +29,6 @@ export function fetchCurrentFollows() {
   try {
     return JSON.parse(localStorage.getItem(CURRENT_FOLLOWS) || "[]");
   } catch (e) {
-    alert("fetchCurrentFollows", e);
     return [];
   }
 }

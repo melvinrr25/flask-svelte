@@ -40,13 +40,13 @@
         posts = [...posts, ...data.posts];
         loadingPosts = false;
       } else {
-        alert("ERROR");
+        loadingPosts = false;
+        toast.error("There was an error loading posts");
       }
     } catch (err) {
       console.log(err);
       loadingPosts = false;
-      alert(err);
-      
+      toast.error("There was an error loading posts");
     }
   };
 

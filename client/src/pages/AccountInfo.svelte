@@ -28,7 +28,8 @@
         toast.error("There was an error updating your account information");
       }
     } catch (err) {
-      alert(err);
+      console.log(err);
+      toast.error("There was an error updating your account information");
     }
   };
 </script>
